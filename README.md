@@ -1,7 +1,8 @@
 # Cenários dos tipos de testes
 
 # Smoke Test
-Um teste de smoke test é um teste de aceitação rápido e superficial que tem como objetivo garantir que as principais funcionalidades do sistema estejam funcionando corretamente. Esse tipo de teste é executado com uma carga mínima e cenários simples para verificar a funcionalidade central do sistema. É ideal para garantir a estabilidade do sistema em condições básicas.
+Smoke test é um teste de aceitação rápido e superficial que tem como objetivo garantir que as principais funcionalidades do sistema estejam funcionando corretamente. 
+Esse tipo de teste é executado com uma carga mínima e cenários simples para verificar a funcionalidade central do sistema. É ideal para garantir a estabilidade do sistema em condições básicas.
 
 1. carga mínima
 2. cenários simples
@@ -19,7 +20,8 @@ vus: 100
 duration: '20m'
 ```
 # Teste de Carga (Load Test)
-O teste de carga mede o desempenho do sistema sob diferentes condições de carga e ajuda a identificar gargalos e problemas relacionados à escalabilidade. Esse tipo de teste é realizado com uma quantidade crescente de tráfego para garantir que o sistema continue funcionando de maneira estável e com bom desempenho.
+O teste de carga mede o desempenho do sistema sob diferentes condições de carga e ajuda a identificar gargalos e problemas relacionados à escalabilidade. 
+Esse tipo de teste é realizado com uma quantidade crescente de tráfego para garantir que o sistema continue funcionando de maneira estável e com bom desempenho.
 
 Benefícios do teste
 * Permite que o sistema aqueça ou redimensione automaticamente para lidar com o tráfego
@@ -38,10 +40,11 @@ duration: '5m', target: 0
 
 Beneficios do teste
 * Permite que seu sistema aqueça ou redimensione automaticamente para lidar com o tráfego.
-*  Permite que você compare o tempo de resposta entre os estágios de carga baixa e carga nominal.
+* Permite que você compare o tempo de resposta entre os estágios de carga baixa e carga nominal.
 
 # Teste de Estresse e de Pico (Stress e Spike Test)
-Os testes de estresse e de pico medem como o sistema se comporta sob alta carga e em condições extremas. Eles ajudam a identificar a capacidade máxima do sistema em termos de usuários ou taxa de transferência, o ponto de ruptura do sistema e a recuperação do sistema sem intervenção manual após o teste de estresse.
+Os testes de estresse e de pico medem como o sistema se comporta sob alta carga e em condições extremas. 
+Eles ajudam a identificar a capacidade máxima do sistema em termos de usuários ou taxa de transferência, o ponto de ruptura do sistema e a recuperação do sistema sem intervenção manual após o teste de estresse.
 
 Como o sistema se comporta sobre alta carga?
 1. Como seu sistema se comporta em condições extremas?
@@ -68,7 +71,8 @@ Reação do Sistema:
 - Ruim
 
 Exemplo de Spike Test
-O spike test é um tipo de teste de estresse que envolve um aumento rápido e significativo no tráfego do sistema. Ele ajuda a identificar como o sistema se comporta em condições extremas.
+O spike test é um tipo de teste de estresse que envolve um aumento rápido e significativo no tráfego do sistema. 
+Ele ajuda a identificar como o sistema se comporta em condições extremas.
 
 ```javascript
     duration: '10m', target: 100
