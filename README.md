@@ -1,17 +1,30 @@
 # Cenários dos tipos de testes
 
 # Smoke Test
+Um teste de smoke test é um teste de aceitação rápido e superficial que tem como objetivo garantir que as principais funcionalidades do sistema estejam funcionando corretamente. Esse tipo de teste é executado com uma carga mínima e cenários simples para verificar a funcionalidade central do sistema. É ideal para garantir a estabilidade do sistema em condições básicas.
+
 1. carga mínima
 2. cenários simples
 3. funcionalidade core
 4. rápido resultado
+
+Benefícios do teste
+* Permite verificar se as funcionalidades centrais do sistema estão funcionando corretamente.
+* É útil para verificar se o sistema está pronto para testes mais avançados.
+* É rápido e fácil de executar.
 
 Exemplo de teste
 ```javascript
 vus: 100
 duration: '20m'
 ```
-# Load Test
+# Teste de Carga (Load Test)
+O teste de carga mede o desempenho do sistema sob diferentes condições de carga e ajuda a identificar gargalos e problemas relacionados à escalabilidade. Esse tipo de teste é realizado com uma quantidade crescente de tráfego para garantir que o sistema continue funcionando de maneira estável e com bom desempenho.
+
+Benefícios do teste
+* Permite que o sistema aqueça ou redimensione automaticamente para lidar com o tráfego
+* Permite que você compare o tempo de resposta entre os estágios de carga baixa e carga nominal
+
 1. Quantidade de tráfego
 2. Condiçoes normais e de pico
 3. Garantir funcionamento
@@ -23,11 +36,13 @@ duration: '10m', target: 100
 duration: '5m', target: 0
 ```
 
-### Beneficios do teste
-Permite que seu sistema aqueça ou redimensione automaticamente para lidar com o tráfego.
-Permite que você compare o tempo de resposta entre os estágios de carga baixa e carga nominal.
+Beneficios do teste
+* Permite que seu sistema aqueça ou redimensione automaticamente para lidar com o tráfego.
+*  Permite que você compare o tempo de resposta entre os estágios de carga baixa e carga nominal.
 
-# Stress e Spike Test
+# Teste de Estresse e de Pico (Stress e Spike Test)
+Os testes de estresse e de pico medem como o sistema se comporta sob alta carga e em condições extremas. Eles ajudam a identificar a capacidade máxima do sistema em termos de usuários ou taxa de transferência, o ponto de ruptura do sistema e a recuperação do sistema sem intervenção manual após o teste de estresse.
+
 Como o sistema se comporta sobre alta carga?
 1. Como seu sistema se comporta em condições extremas?
 2. Qual é a capacidade máxima do seu sistema em termos de usuários ou tava de transferência?
@@ -53,6 +68,8 @@ Reação do Sistema:
 - Ruim
 
 Exemplo de Spike Test
+O spike test é um tipo de teste de estresse que envolve um aumento rápido e significativo no tráfego do sistema. Ele ajuda a identificar como o sistema se comporta em condições extremas.
+
 ```javascript
     duration: '10m', target: 100
     duration: '1m', target: 100
@@ -62,8 +79,22 @@ Exemplo de Spike Test
     duration: '3m', target: 100
     duration: '10s', target: 0
 ```
+Perguntas a serem Respondidas
+* Como seu sistema se comporta em condições extremas?
+* Qual é a capacidade máxima do seu sistema em termos de usuários ou tráfego?
+* Qual é o ponto de ruptura do seu sistema?
+* O sistema se recupera sem intervenção manual após o término do teste de estresse?
 
 # Soak Test
+O Soak Test é utilizado para avaliar a confiabilidade do sistema em longos períodos de tempo.
+
+Objetivos do Teste
+* Verificar se o sistema não sofre de bugs ou vazamentos de memória.
+* Verificar se as reinicializações inesperadas do aplicativo não perdem solicitações.
+* Encontrar bugs relacionados a condições de corrida que aparecem esporadicamente.
+* Certificar que o banco de dados não esgota o espaço de armazenamento alocado e pare.
+* Certificar-se de que os logs não esgotam o armazenamento em disco alocado.
+
 Confiabilidade em logos períodos de tempo.
 
 1. O sistema não sofre de bugs ou vazamentos de memória.
@@ -84,24 +115,53 @@ Pontos importantes:
 1. Quantidade de usuarios
 2. Requisitos de infraestrutura.
 
-## Modelo da estrutura dos arquivos de teste
+## Estrutura de teste em K6
+A estrutura básica de um teste em K6 consiste em quatro seções principais:
+
+1. **Inicialização:** nessa seção, você pode importar bibliotecas necessárias e executar outras tarefas de configuração.
+2. **Configuração:** aqui você define as opções e configurações do K6, como o número de usuários virtuais (VUs) e a duração do teste.
+3. **Execução:** é nesta seção que você escreve o código que será executado pelos VUs durante o teste.
+4. **Desmontagem:** na seção final, você pode incluir código para limpar e finalizar o teste.
+
+## Exemplo de estrutura de teste em K6
+Suponha que você queira executar um teste de carga em uma API REST simples que retorna um JSON. O teste pode ser estruturado da seguinte forma:
+
 ```javascript
-//1. Inicialização
-import sleep from 'k6'
+// 1. Inicialização
+import http from 'k6/http';
 
-//2. Configuração
-export const options = {
-  vus: 1,
-  duration: '10s'
+// 2. Configuração
+export let options = {
+  vus: 50,
+  duration: '30s',
+  rps: 100
+};
+
+// 3. Execução
+export default function () {
+  const res = http.get('https://test.k6.io/');
+};
+
+// 4. Desmontagem
+export function teardown(data) {
+  console.log("Test finished.");
 }
 
-//3. execução // codigo vu
-export default function() {
-  sleep(1)
-}
+```
 
-//4. desmontagem
-export function teardown(data) { 
-  console.log(data)
-}
+```lua
+k6-performance/
+├── package.json
+├── k6.js
+├── tests/
+│   ├── smoke.js
+│   ├── load.js
+│   ├── stress-spike.js
+│   ├── soak.js
+│   └── utils.js
+├── results/
+│   └── report.html
+└── thresholds/
+    └── thresholds.js
+
 ```
