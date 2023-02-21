@@ -126,6 +126,24 @@ A estrutura básica de um teste em K6 consiste em quatro seções principais:
 ## Exemplo de estrutura de teste em K6
 Suponha que você queira executar um teste de carga em uma API REST simples que retorna um JSON. O teste pode ser estruturado da seguinte forma:
 
+Pastas
+```lua
+k6-performance/
+├── package.json
+├── k6.js
+├── tests/
+│   ├── smoke.js
+│   ├── load.js
+│   ├── stress-spike.js
+│   ├── soak.js
+│   └── utils.js
+├── results/
+│   └── report.html
+└── thresholds/
+    └── thresholds.js
+
+```
+Arquivos
 ```javascript
 // 1. Inicialização
 import http from 'k6/http';
@@ -146,22 +164,5 @@ export default function () {
 export function teardown(data) {
   console.log("Test finished.");
 }
-
-```
-
-```lua
-k6-performance/
-├── package.json
-├── k6.js
-├── tests/
-│   ├── smoke.js
-│   ├── load.js
-│   ├── stress-spike.js
-│   ├── soak.js
-│   └── utils.js
-├── results/
-│   └── report.html
-└── thresholds/
-    └── thresholds.js
 
 ```
