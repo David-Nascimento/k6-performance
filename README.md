@@ -57,15 +57,13 @@ Beneficios do teste
 Cenário:
 ```lua
   Public API:
-    Buscar todos os crocodilos por id
+    Buscar todos os crocodilos
   Critérios:
     performance test
-      Ramp up 10 VU em 10s
-      Carga 10 VU por 10s
-      Ramp down 0 VU em 10s
+      100 VU por 10s
   Limites:
-    Requisições com sucesso > 95%
-    Tempo requisição p(90) < 200
+    Requisição com falha inferior a 1%
+    Duração da requisição p(95) < 250>
 ```
 
 # Teste de Estresse e de Pico (Stress e Spike Test)

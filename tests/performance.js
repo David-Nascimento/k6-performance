@@ -1,35 +1,45 @@
-import http from "k6/http";
-import { check, sleep } from "k6";
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
-
-export const options = {
-    stages: [{ duration: '2s', target: 10}],
-    thresholds: {
-        checks: ['rate < 0.95'],
+export const options = { 
+    vus: 100,
+    duration: '10s',
+    threshoulds: {
         http_req_failed: ['rate < 0.01'],
-        http_req_duration: ['p(95) < 500']
+        http_req_duration: ['p(95) < 250']
     }
-};
+}
 
-
-
-export default function() {
-    const BASE_URL = "http://test-api.k6.io";
-
-    const USER = `${Math.random()}@mail.com`;
-    const PASSWORD = "user123";
-
-    const res = http.post(`${BASE_URL}/user/register/`, {
-        username: USER,
-        password: PASSWORD,
-        first_name: "crocodilo",
-        last_name: "dino",
-        email: USER
+const BASE_URL = 'http://test-api.k6.io';
+export function setup() {
+    const loginRes = http.post(`${BASE_URL}/auth/token/login/`, {
+        username: '0.2405037192902699@mail.com',
+        password: 'user123'
     });
 
+    const token = loginRes.json('access');
+    return token;
+}
+
+export default function(token) {
+
+    const params = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const res = http.get(`${BASE_URL}/my/crocodiles`, params)
     check(res, {
-        'register success': (r) => r.status === 201
+        'is code 200': (r) => r.status === 200
     });
-
     sleep(1)
 }
+
+export function tearDown(data) {
+    return {
+      "./results/summary.html": htmlReport(data),
+    };
+  }
