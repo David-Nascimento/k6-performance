@@ -1,5 +1,5 @@
 import http from "k6/http";
-import { check } from "k6/check";
+import { check } from "k6";
 
 export const options = {
     vus: 1,

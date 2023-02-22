@@ -139,12 +139,11 @@ k6-performance/
 │   ├── smoke.js
 │   ├── load.js
 │   ├── stress-spike.js
-│   ├── soak.js
-│   └── utils.js
+│   └── soak.js
 ├── results/
 │   └── report.html
-└── thresholds/
-    └── thresholds.js
+└── payload/
+    └── payload.json
 
 ```
 Arquivos
