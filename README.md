@@ -19,6 +19,18 @@ Exemplo de teste
 vus: 100
 duration: '20m'
 ```
+
+Cenário:
+```lua
+  Public API:
+    Buscar todos os crocodilos
+  Critérios:
+    smoke test
+      1 usuário por 30s
+  Limites:
+    Requisição com sucesso > 99%
+```
+
 # Teste de Carga (Load Test)
 O teste de carga mede o desempenho do sistema sob diferentes condições de carga e ajuda a identificar gargalos e problemas relacionados à escalabilidade. 
 Esse tipo de teste é realizado com uma quantidade crescente de tráfego para garantir que o sistema continue funcionando de maneira estável e com bom desempenho.
@@ -41,6 +53,20 @@ duration: '5m', target: 0
 Beneficios do teste
 * Permite que seu sistema aqueça ou redimensione automaticamente para lidar com o tráfego.
 * Permite que você compare o tempo de resposta entre os estágios de carga baixa e carga nominal.
+
+Cenário:
+```lua
+  Public API:
+    Buscar todos os crocodilos por id
+  Critérios:
+    performance test
+      Ramp up 10 VU em 10s
+      Carga 10 VU por 10s
+      Ramp down 0 VU em 10s
+  Limites:
+    Requisições com sucesso > 95%
+    Tempo requisição p(90) < 200
+```
 
 # Teste de Estresse e de Pico (Stress e Spike Test)
 Os testes de estresse e de pico medem como o sistema se comporta sob alta carga e em condições extremas. 
@@ -88,6 +114,34 @@ Perguntas a serem Respondidas
 * Qual é a capacidade máxima do seu sistema em termos de usuários ou tráfego?
 * Qual é o ponto de ruptura do seu sistema?
 * O sistema se recupera sem intervenção manual após o término do teste de estresse?
+
+Cenário:
+```lua
+  Registration e auth: login
+    Relizar o login com um novo usuário
+  Critérios:
+    Stress test
+      Ramp up 5 VU em 5s
+      Carga 5 VU por 5s
+      Ramp up 50 VU em 2s
+      Carga 50 VU em 2s
+      Ramp down 0 VU em 5s
+  Limites:
+    Requisição com falha inferior a 1%      
+```
+
+Cenário:
+```lua
+  Registration e auth: Register
+    Realizar o registro de um novo usuário
+  Critérios:
+    Spike Test
+      Carga 10 VU por 10s
+  Limites:
+    Requisição com falaha inferior a 1%
+    Duração da requisição p(95) < 500
+    Requisição com sucesso superior a 95%
+```
 
 # Soak Test
 O Soak Test é utilizado para avaliar a confiabilidade do sistema em longos períodos de tempo.
@@ -138,34 +192,12 @@ k6-performance/
 ├── tests/
 │   ├── smoke.js
 │   ├── load.js
-│   ├── stress-spike.js
+│   ├── stress.js
+│   ├── performance.js
 │   └── soak.js
 ├── results/
 │   └── report.html
 └── payload/
     └── payload.json
-
-```
-Arquivos
-```javascript
-// 1. Inicialização
-import http from 'k6/http';
-
-// 2. Configuração
-export let options = {
-  vus: 50,
-  duration: '30s',
-  rps: 100
-};
-
-// 3. Execução
-export default function () {
-  const res = http.get('https://test.k6.io/');
-};
-
-// 4. Desmontagem
-export function teardown(data) {
-  console.log("Test finished.");
-}
 
 ```
