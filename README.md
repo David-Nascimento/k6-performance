@@ -1,3 +1,4 @@
+[![CI Checks & Build](https://github.com/David-Nascimento/k6-performance/actions/workflows/main.yml/badge.svg)](https://github.com/David-Nascimento/k6-performance/actions/workflows/main.yml)
 # Cenários dos tipos de testes
 
 # Smoke Test
