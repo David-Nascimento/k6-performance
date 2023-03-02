@@ -1,6 +1,7 @@
 // 1. Inicialização
 import { group } from 'k6';
 import GetCrocodilos from "./tests/load.js";
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 // 2. Configuração
 export const options = {
