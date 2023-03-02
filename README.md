@@ -200,3 +200,5 @@ k6-performance/
     └── payload.json
 
 ```
+# K6 com Docker e Grafana
+![1_fTPa8w2jMmQNDdWW5PJ9HQ](https://user-images.githubusercontent.com/53004819/222304770-ef1e7caf-968f-4066-a6e3-828e14e65450.png)

@@ -37,10 +37,3 @@ export default function(token) {
     });
     sleep(1)
 }
-
-export function handleSummary(data) {
-    console.log('Finished executing performance tests');
-    return {
-        "./results/summary.html": htmlReport(data),
-    };
-}

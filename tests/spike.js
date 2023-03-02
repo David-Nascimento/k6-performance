@@ -1,7 +1,6 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
 
-
 export const options = {
     stages: [{ duration: '2s', target: 10}],
     thresholds: {
@@ -10,8 +9,6 @@ export const options = {
         http_req_duration: ['p(95) < 500']
     }
 };
-
-
 
 export default function() {
     const BASE_URL = "http://test-api.k6.io";

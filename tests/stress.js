@@ -16,8 +16,9 @@ export const options = {
     }
 };
 
-const csvData = new SharedArray('Ler dados', function (){
-    return papaparse.parse(open('./payload/usuarios.csv'), { header: true}).data;
+const csvData = new SharedArray('Ler dados', function() {
+    let { data } = papaparse.parse(open('../payload/usuarios.csv'), { header: true });
+    return data
 });
 
 export default function() {
