@@ -4,11 +4,23 @@ import {myTrend, myRate, myCounter } from "./utils/k6.config.js";
 import GetCrocodilos from "./tests/load.js";
 import { group } from "k6";
 
-let VUS = 10
+let VUS = 10 * 10 * 10;
 
 export const options = {
-    vus: VUS * 2,
-    duration: '5s',
+    scenarios: {
+        loadTest: {
+            executor: 'ramping-arrival-rate',
+            startRate: 50,
+            timeUnit: '1s',
+            stages: [
+                { target: VUS * 2, duration: '15s' },
+                { target: VUS * 3, duration: '10s' },
+                { target: 0, duration: '5s'  }
+            ],
+            preAllocatedVUs: 50,
+            maxVUs: 100,
+        }
+    }
 };
 
 
@@ -22,6 +34,8 @@ export default () => {
     })
 }
 
+/*
 export const handleSummary = data => {
     return { "./results/report.html": htmlReport(data) };
 };
+*/

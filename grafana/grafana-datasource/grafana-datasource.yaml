@@ -4,6 +4,6 @@ datasources:
   - name: k6influxdb
     type: influxdb
     access: proxy
+    url: http://k6-performance-influxdb-1:8086
     database: k6
-    url: http://influxdb:8086
     isDefault: true

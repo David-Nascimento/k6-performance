@@ -4,51 +4,50 @@ networks:
   k6:
   grafana:
 
-
 services:
   influxdb:
     image: influxdb:1.8
-#    entrypoint: /bin/sh
-#    user: root
-    networks:
-      - grafana
     ports:
       - "8086:8086"
     environment:
       - INFLUXDB_DB=k6
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    networks:
+      - k6
+      - grafana
+    restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:8.2.0
-#    entrypoint: /bin/sh
-#    user: root
-    networks:
-      - grafana
+    image: grafana/grafana:latest
     ports:
       - "3000:3000"
     environment:
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_BASIC_ENABLED=false
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
     volumes:
       - ./dashboards:/var/lib/grafana/dashboards
       - ./grafana/grafana-dashboard/grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./grafana/grafana-datasource/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    networks:
+      - grafana
     depends_on:
       - influxdb
+    restart: unless-stopped
 
   k6:
     image: loadimpact/k6:latest
-#    entrypoint: /bin/sh
-#    user: root
+    volumes:
+      - ./:/scripts
     networks:
       - k6
     ports:
       - "6565:6565"
     environment:
-      - K6_OUT=influxdb=http://influxdb:8086/k6
-    volumes:	
-      - ./:/scripts
+      - K6_OUT=influxdb=http://k6-performance-influxdb-1:8086/k6
     depends_on:
       - influxdb
-    command: run /scripts/main.js --out influxdb=http://influxdb:8086 --config /scripts/k6-config.json
+      - grafana
+    restart: unless-stopped
+    command: run /scripts/main.js
