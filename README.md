@@ -186,14 +186,24 @@ Suponha que você queira executar um teste de carga em uma API REST simples que 
 Pastas
 ```lua
 k6-performance/
+├── run-docker-tests.sh
+├── run-local-tests.sh
+├── docker-compose.yml
 ├── package.json
-├── k6.js
+├── k6-config.js
+├── grafana
+│   ├── grafana-dashboard
+│   │   └── grafana-dashboard.yaml
+│   └── grafana-datasource
+│       └── grafana-datasource.yaml
+├── main.js
 ├── tests/
 │   ├── smoke.js
 │   ├── load.js
 │   ├── stress.js
 │   ├── performance.js
-│   └── soak.js
+│   ├── spike.js
+│   └── thresholds.js
 ├── results/
 │   └── report.html
 └── payload/

@@ -1,9 +1,10 @@
-name: CI Checks & Build
+name: CI Load Testing
 
 on:
   push:
     branches: ["main"]
   pull_request:
+    branches: [ main ]
 
 jobs:
   build:

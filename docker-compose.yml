@@ -11,7 +11,6 @@ services:
 #    entrypoint: /bin/sh
 #    user: root
     networks:
-      - k6
       - grafana
     ports:
       - "8086:8086"
@@ -19,7 +18,7 @@ services:
       - INFLUXDB_DB=k6
 
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:8.2.0
 #    entrypoint: /bin/sh
 #    user: root
     networks:
@@ -35,6 +34,8 @@ services:
       - ./dashboards:/var/lib/grafana/dashboards
       - ./grafana/grafana-dashboard/grafana-dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./grafana/grafana-datasource/grafana-datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    depends_on:
+      - influxdb
 
   k6:
     image: loadimpact/k6:latest
@@ -48,3 +49,6 @@ services:
       - K6_OUT=influxdb=http://influxdb:8086/k6
     volumes:	
       - ./:/scripts
+    depends_on:
+      - influxdb
+    command: run /scripts/main.js --out influxdb=http://influxdb:8086 --config /scripts/k6-config.json

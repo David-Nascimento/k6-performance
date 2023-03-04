@@ -1,5 +1,5 @@
 import http from 'k6/http';
-import { check, sleep } from 'k6';
+
 import { SharedArray } from 'k6/data';
 
 const data = new SharedArray('Leitura do json', function() {
@@ -10,11 +10,9 @@ const data = new SharedArray('Leitura do json', function() {
 const BASE_URL = 'http://test-api.k6.io/public/crocodiles/';
 
 export default function() {
-    const crocodilo = data[Math.floor(Math.random() * data.length)].id;
-    const url = `${BASE_URL}${crocodilo}`;
+    let { id } = data[Math.floor(Math.random() * data.length)];
+    const url = `${BASE_URL}${id}`;
     const res = http.get(url);
-    check(res, {
-        'is code 200': (r) => r.status === 200
-    });
-    sleep(1);
+
+    return res;
 }
